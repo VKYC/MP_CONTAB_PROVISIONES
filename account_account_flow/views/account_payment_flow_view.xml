@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_mp_provicion_tree" model="ir.ui.view">
-        <field name="name">mp.provicion.tree</field>
-        <field name="model">mp.provicion</field>
+    <record id="view_mp_provision_tree" model="ir.ui.view">
+        <field name="name">mp.provision.tree</field>
+        <field name="model">mp.provision</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="codigo"/>
                 <field name="decripcion"/>
                 <field name="cuanta_pasivo_id" options="{'no_create': True, 'no_open':True}"/>
                 <field name="cuanta_gasto_id" options="{'no_create': True, 'no_open':True}"/>
-                <field name="mp_grupo_provicion_ids" widget="many2many_tags" options="{'no_create': True, 'no_open':True}"/>
+                <field name="mp_grupo_provision_ids" widget="many2many_tags" options="{'no_create': True, 'no_open':True}"/>
             </tree>
         </field>
     </record>
 
-    <record id="view_grupo_provicion_form" model="ir.ui.view">
-        <field name="name">mp.grupo.provicion.form</field>
-        <field name="model">mp.grupo.provicion</field>
+    <record id="view_grupo_provision_form" model="ir.ui.view">
+        <field name="name">mp.grupo.provision.form</field>
+        <field name="model">mp.grupo.provision</field>
         <field name="arch" type="xml">
-            <form string="MP Grupo provicion">
+            <form string="MP Grupo provision">
                 <sheet>
                     <group>
                         <field name="nombre"/>
@@ -31,11 +31,11 @@
         </field>
     </record>
 
-    <record id="view_provicion_form" model="ir.ui.view">
-        <field name="name">mp.provicion.form</field>
-        <field name="model">mp.provicion</field>
+    <record id="view_provision_form" model="ir.ui.view">
+        <field name="name">mp.provision.form</field>
+        <field name="model">mp.provision</field>
         <field name="arch" type="xml">
-            <form string="MP provicion">
+            <form string="MP provision">
                 <sheet>
                     <group>
                         <field name="codigo"/>
@@ -48,7 +48,7 @@
                         <field name="cuanta_pasivo_id" options="{'no_create': True, 'no_open':True}"/>
                     </group>
                     <group>
-                        <field name="mp_grupo_provicion_ids" widget="many2many_tags" options="{'no_create': True, 'no_open':True}"/>
+                        <field name="mp_grupo_provision_ids" widget="many2many_tags" options="{'no_create': True, 'no_open':True}"/>
                     </group>
                 </sheet>
             </form>
@@ -56,8 +56,8 @@
     </record>
 
     <record id="view_mp_grupo_flujo_tree" model="ir.ui.view">
-        <field name="name">mp.grupo.provicion.tree</field>
-        <field name="model">mp.grupo.provicion</field>
+        <field name="name">mp.grupo.provision.tree</field>
+        <field name="model">mp.grupo.provision</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="nombre"/>
@@ -66,28 +66,28 @@
         </field>
     </record>
 
-    <record model="ir.actions.act_window" id="ir_account_mp_provicion">
-        <field name="name">MP provicion</field>
-        <field name="res_model">mp.provicion</field>
+    <record model="ir.actions.act_window" id="ir_account_mp_provision">
+        <field name="name">MP provision</field>
+        <field name="res_model">mp.provision</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <record model="ir.actions.act_window" id="ir_account_mp_grupo_provicion">
-        <field name="name">MP Grupo provicion</field>
-        <field name="res_model">mp.grupo.provicion</field>
+    <record model="ir.actions.act_window" id="ir_account_mp_grupo_provision">
+        <field name="name">MP Grupo provision</field>
+        <field name="res_model">mp.grupo.provision</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="account_mp_provicion_menu" parent="account.menu_finance_configuration"
-              name="Provicion" sequence="2"/>
+    <menuitem id="account_mp_provision_menu" parent="account.menu_finance_configuration"
+              name="Provision" sequence="2"/>
 
-    <menuitem id="menu_action_account_mp_provicion"
-              name="MP Provicion"
-              action="ir_account_mp_provicion" parent="account_mp_provicion_menu"/>
+    <menuitem id="menu_action_account_mp_provision"
+              name="MP Provision"
+              action="ir_account_mp_provision" parent="account_mp_provision_menu"/>
 
-    <menuitem id="menu_action_account_mp_grupo_provicion"
-              name="MP Grupo Provicion"
-              action="ir_account_mp_grupo_provicion" parent="account_mp_provicion_menu"/>
+    <menuitem id="menu_action_account_mp_grupo_provision"
+              name="MP Grupo Provision"
+              action="ir_account_mp_grupo_provision" parent="account_mp_provision_menu"/>
 
 
 </odoo>
