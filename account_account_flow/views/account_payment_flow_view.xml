@@ -5,11 +5,11 @@
         <field name="model">mp.provision</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="mp_grupo_provision_ids" widget="many2many_tags" options="{'no_create': True, 'no_open':True}"/>
                 <field name="codigo"/>
                 <field name="decripcion"/>
-                <field name="cuanta_pasivo_id" options="{'no_create': True, 'no_open':True}"/>
-                <field name="cuanta_gasto_id" options="{'no_create': True, 'no_open':True}"/>
-                <field name="mp_grupo_provision_ids" widget="many2many_tags" options="{'no_create': True, 'no_open':True}"/>
+                <field name="cuenta_pasivo_id" options="{'no_create': True, 'no_open':True}"/>
+                <field name="cuenta_gasto_id" options="{'no_create': True, 'no_open':True}"/>
             </tree>
         </field>
     </record>
@@ -38,17 +38,17 @@
             <form string="MP provision">
                 <sheet>
                     <group>
+                        <field name="mp_grupo_provision_ids" widget="many2many_tags" options="{'no_create': True, 'no_open':True}"/>
+                    </group>
+                    <group>
                         <field name="codigo"/>
                     </group>
                     <group>
                         <field name="decripcion"/>
                     </group>
                     <group>
-                        <field name="cuanta_gasto_id" options="{'no_create': True, 'no_open':True}"/>
-                        <field name="cuanta_pasivo_id" options="{'no_create': True, 'no_open':True}"/>
-                    </group>
-                    <group>
-                        <field name="mp_grupo_provision_ids" widget="many2many_tags" options="{'no_create': True, 'no_open':True}"/>
+                        <field name="cuenta_gasto_id" options="{'no_create': True, 'no_open':True}"/>
+                        <field name="cuenta_pasivo_id" options="{'no_create': True, 'no_open':True}"/>
                     </group>
                 </sheet>
             </form>

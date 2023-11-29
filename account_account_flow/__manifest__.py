@@ -12,8 +12,11 @@
     'depends': ['account'],
     'data': [
         'security/ir.model.access.csv',
+        'data/mp_provision_secuence.xml',
+        # 'data/mp_provision_account_move_secuence.xml',
         'views/account_payment_flow_view.xml',
         'views/account_account_type_views.xml',
+        'views/account_mp_provision_account_move.xml',
         # 'views/account_move.xml',
     ],
     "license": "Other proprietary",

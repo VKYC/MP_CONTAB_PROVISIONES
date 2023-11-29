@@ -6,5 +6,5 @@ class AccountAccount(models.Model):
 
     account_type = fields.Selection(
         selection=[("passive", "Es cuenta pasivos"), ("expense", "Es cuenta de gastos")],
-        string="Tipo de cuenta"
+        string="Tipo de cuenta PROVISION"
     )

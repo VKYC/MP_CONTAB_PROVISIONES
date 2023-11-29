@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_mp_provision_account_move_tree" model="ir.ui.view">
+        <field name="name">mp.provision.account.move.tree</field>
+        <field name="model">mp.provision.account.move</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="mp_provision_id" options="{'no_create': True, 'no_open':True}"/>
+                <field name="company_id" invisible="1"/>
+                <field name="mp_provision_ids" invisible="1"/>
+                <field name="analytic_account_id" options="{'no_create': True, 'no_open':True}"/>
+                <field name="analytic_tag_ids" widget="many2many_tags" options="{'no_create': True, 'no_open':True}"/>
+                <field name="mp_provision_journal_item_ids"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_provision_account_move_form" model="ir.ui.view">
+        <field name="name">mp.provision.account.move.form</field>
+        <field name="model">mp.provision.account.move</field>
+        <field name="arch" type="xml">
+            <form string="MP provision">
+                <header>
+                    <button
+                        string="Confirmar"
+                        name="action_confirm"
+                        type="object"
+                        attrs="{'invisible': [('state', '!=', 'draft')]}"
+                    />
+                    <field
+                        name="state"
+                        widget="statusbar"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1" force_save="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="mp_grupo_provision_id" options="{'no_create': True, 'no_open':True}"/>
+                        </group>
+                        <group>
+                            <field name="mp_provision_id" options="{'no_create': True, 'no_open':True}"/>
+                            <field name="mp_provision_ids" invisible="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="company_id" invisible="1"/>
+                            <field name="analytic_account_id" options="{'no_create': True, 'no_open':True}"/>
+                        </group>
+                        <group>
+                            <field name="company_id" invisible="1"/>
+                            <field name="analytic_tag_ids" widget="many2many_tags" options="{'no_create': True, 'no_open':True}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <notebook>
+                            <page string="Apuntes Contables">
+                                <field name="mp_provision_journal_item_ids" mode="tree"
+                                       options="{'create': False, 'delete': False}">
+                                    <tree editable="bottom" string="Apuntes contables">
+                                        <field name="account_id" options="{'no_create': True, 'no_open':True}"
+                                               readonly="1" force_save="1"/>
+                                        <field name="debit" sum="Total Debito"/>
+                                        <field name="credit" sum="Total Credito"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="ir_account_mp_provision_account_move">
+        <field name="name">MP provisiones</field>
+        <field name="res_model">mp.provision.account.move</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="account_mp_provision_account_move_menu" parent="account.menu_finance_entries"
+              name="Provision" sequence="2"/>
+
+    <menuitem id="menu_action_account_mp_provision_account_move"
+              name="MP Provisiones"
+              action="ir_account_mp_provision_account_move" parent="account_mp_provision_account_move_menu"/>
+</odoo>
