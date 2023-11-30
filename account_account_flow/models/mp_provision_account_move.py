@@ -3,8 +3,10 @@ from odoo import fields, models, api, _
 
 class MpProvisionAccountMove(models.Model):
     _name = 'mp.provision.account.move'
+    _order = "name DESC"
 
     name = fields.Char(readonly=True, required=True, copy=False, default=lambda self: _('New'))
+    date = fields.Date(required=True, string='Fecha')
     state = fields.Selection(
         selection=[
             ("draft", "Draft"),
@@ -65,6 +67,7 @@ class MpProvisionAccountMove(models.Model):
             sequence += 1
         self.account_move_id.line_ids.unlink()
         self.account_move_id.sudo().write({'line_ids': list_line_ids})
+        self.account_move_id.sudo().write({'date': self.date})
         return res
 
     @api.model
@@ -82,9 +85,9 @@ class MpProvisionAccountMove(models.Model):
         journal_id = self.env['account.journal'].search([('code', 'ilike', 'vario')])
         rec.account_move_id = self.env['account.move'].sudo().create({
             'state': 'draft',
-            'date': fields.Datetime.now(),
+            'date': rec.date,
             'journal_id': journal_id.id,
-            'name': rec.name
+            'name': rec.name,
         })
         list_line_ids = []
         sequence = 0
