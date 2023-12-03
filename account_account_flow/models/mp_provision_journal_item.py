@@ -21,6 +21,7 @@ class MpProvisionJournalItem(models.Model):
     state = fields.Selection(related='mp_provision_account_move_id.state')
     date = fields.Date(related='mp_provision_account_move_id.date')
     mp_provision_id = fields.Many2one(related='mp_provision_account_move_id.mp_provision_id', store=True)
+    line_mp_provision_id = fields.Many2one(comodel_name='mp.provision')
 
     @api.onchange('debit')
     def onchange_debit(self):

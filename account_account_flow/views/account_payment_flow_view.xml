@@ -8,8 +8,6 @@
                 <field name="mp_grupo_provision_ids" widget="many2many_tags" options="{'no_create': True, 'no_open':True}"/>
                 <field name="codigo"/>
                 <field name="decripcion"/>
-                <field name="cuenta_pasivo_id" options="{'no_create': True, 'no_open':True}"/>
-                <field name="cuenta_gasto_id" options="{'no_create': True, 'no_open':True}"/>
             </tree>
         </field>
     </record>
@@ -47,8 +45,17 @@
                         <field name="decripcion"/>
                     </group>
                     <group>
-                        <field name="cuenta_gasto_id" options="{'no_create': True, 'no_open':True}"/>
-                        <field name="cuenta_pasivo_id" options="{'no_create': True, 'no_open':True}"/>
+                        <notebook>
+                            <page string="Cuentas Ligadas">
+                                <field name="mp_provision_item_line_ids" force_save="1" mode="tree"
+                                       options="{'create': False, 'delete': False}">
+                                    <tree editable="bottom">
+                                        <field name="activo"/>
+                                        <field name="account_id" readonly="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </group>
                 </sheet>
             </form>
@@ -81,13 +88,12 @@
     <menuitem id="account_mp_provision_menu" parent="account.menu_finance_configuration"
               name="Provision" sequence="2"/>
 
-    <menuitem id="menu_action_account_mp_provision"
-              name="MP Provision"
-              action="ir_account_mp_provision" parent="account_mp_provision_menu"/>
-
     <menuitem id="menu_action_account_mp_grupo_provision"
-              name="MP Grupo Provision"
+              name="MP Grupo Provision" sequence="5"
               action="ir_account_mp_grupo_provision" parent="account_mp_provision_menu"/>
 
+    <menuitem id="menu_action_account_mp_provision"
+              name="MP Provision" sequence="10"
+              action="ir_account_mp_provision" parent="account_mp_provision_menu"/>
 
 </odoo>

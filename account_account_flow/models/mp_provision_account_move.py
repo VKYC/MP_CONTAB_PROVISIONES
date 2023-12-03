@@ -68,6 +68,7 @@ class MpProvisionAccountMove(models.Model):
         self.account_move_id.line_ids.unlink()
         self.account_move_id.sudo().write({'line_ids': list_line_ids})
         self.account_move_id.sudo().write({'date': self.date})
+        self.account_move_id.sudo().write({'name': self.name})
         return res
 
     @api.model
@@ -124,15 +125,10 @@ class MpProvisionAccountMove(models.Model):
     def onchange_mp_provision_id(self):
         for provision_id in self:
             provision_id.mp_provision_journal_item_ids = self.env['mp.provision.journal.item']
-            if provision_id.mp_provision_id.cuenta_gasto_id:
-                provision_id.mp_provision_journal_item_ids += self.env['mp.provision.journal.item'].create({
-                    'account_id': provision_id.mp_provision_id.cuenta_gasto_id.id,
-                    'debit': 0,
-                    'credit': 0,
-                })
-            if provision_id.mp_provision_id.cuenta_pasivo_id:
-                provision_id.mp_provision_journal_item_ids += self.env['mp.provision.journal.item'].create({
-                    'account_id': provision_id.mp_provision_id.cuenta_pasivo_id.id,
-                    'debit': 0,
-                    'credit': 0,
-                })
+            for line_id in provision_id.mp_provision_id.mp_provision_item_line_ids:
+                if line_id.activo:
+                    provision_id.mp_provision_journal_item_ids += self.env['mp.provision.journal.item'].create({
+                            'account_id': line_id.account_id.id,
+                            'debit': 0,
+                            'credit': 0,
+                        })

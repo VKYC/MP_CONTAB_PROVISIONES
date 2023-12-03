@@ -4,7 +4,4 @@ from odoo import models, fields, api
 class AccountAccount(models.Model):
     _inherit = "account.account"
 
-    account_type = fields.Selection(
-        selection=[("passive", "Es cuenta pasivos"), ("expense", "Es cuenta de gastos")],
-        string="Tipo de cuenta PROVISION"
-    )
+    group_provision_ids = fields.Many2many(comodel_name='mp.grupo.provision', string='Grupos PROVISION')

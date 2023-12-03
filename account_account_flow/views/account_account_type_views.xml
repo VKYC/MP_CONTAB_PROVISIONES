@@ -6,7 +6,8 @@
         <field name="inherit_id" ref="account.view_account_form"/>
         <field name="arch" type="xml">
             <field name="user_type_id" position="after">
-                <field name="account_type"/>
+                <field name="group_provision_ids" widget="many2many_tags"
+                       options="{'no_create': True, 'no_open':True}"/>
             </field>
         </field>
     </record>
