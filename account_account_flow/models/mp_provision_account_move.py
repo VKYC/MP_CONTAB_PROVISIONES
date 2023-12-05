@@ -1,4 +1,5 @@
 from odoo import fields, models, api, _
+from odoo.exceptions import UserError
 
 
 class MpProvisionAccountMove(models.Model):
@@ -92,9 +93,13 @@ class MpProvisionAccountMove(models.Model):
         })
         list_line_ids = []
         sequence = 0
+        debit = 0
+        credit = 0
         for line_id in rec.mp_provision_journal_item_ids:
             amount_currency = line_id.debit if line_id.credit == 0 else line_id.credit
             amount_currency = amount_currency * -1 if line_id.credit != 0 else amount_currency
+            debit += line_id.debit
+            credit += line_id.credit
             list_line_ids.append(
                 (0, 0, {
                     'account_id': line_id.account_id.id,
@@ -114,6 +119,8 @@ class MpProvisionAccountMove(models.Model):
                 })
             )
             sequence += 1
+        if credit == 0 or debit == 0:
+            raise UserError(_("No se puede guardar asientos en 0."))
         rec.account_move_id.sudo().write({'line_ids': list_line_ids})
         return rec
 
