@@ -69,8 +69,14 @@
                                     <tree editable="bottom" string="Apuntes contables">
                                         <field name="account_id" options="{'no_create': True, 'no_open':True}"
                                                readonly="1" force_save="1"/>
+                                        <field name="currency_id" options="{'no_create': True, 'no_open':True}"
+                                               readonly="1" force_save="1"/>
                                         <field name="debit" sum="Total Debito"/>
                                         <field name="credit" sum="Total Credito"/>
+                                        <field name="currency_company_debit" sum="Total Debito CLP"
+                                               force_save="1"/>
+                                        <field name="currency_company_credit" sum="Total Credit CLP"
+                                               force_save="1"/>
                                     </tree>
                                 </field>
                             </page>

@@ -47,24 +47,24 @@ class MpProvisionAccountMove(models.Model):
         for line_id in self.mp_provision_journal_item_ids:
             amount_currency = line_id.debit if line_id.credit == 0 else line_id.credit
             amount_currency = amount_currency * -1 if line_id.credit != 0 else amount_currency
-            list_line_ids.append(
-                (0, 0, {
-                    'account_id': line_id.account_id.id,
-                    'account_root_id': line_id.account_id.id,
-                    'name': line_id.account_id.name,
-                    'display_type': False,
-                    'debit': line_id.debit,
-                    'credit': line_id.credit,
-                    'sequence': sequence,
-                    'amount_currency': amount_currency,
-                    'currency_id': self.currency_id.id,
-                    'analytic_account_id': self.analytic_account_id.id,
-                    'analytic_tag_ids': self.analytic_tag_ids.ids,
-                    'company_currency_id': self.currency_id.id,
-                    'quantity': 1,
-                    'product_id': False,
-                })
-            )
+            line_id_to_add = (0, 0, {
+                'account_id': line_id.account_id.id,
+                'account_root_id': line_id.account_id.id,
+                'name': line_id.account_id.name,
+                'display_type': False,
+                'debit': line_id.currency_company_debit,
+                'credit': line_id.currency_company_credit,
+                'sequence': sequence,
+                'amount_currency': amount_currency,
+                'currency_id': line_id.currency_id.id,
+                'analytic_account_id': self.analytic_account_id.id,
+                'analytic_tag_ids': self.analytic_tag_ids.ids,
+                'company_currency_id': self.currency_id.id,
+                'quantity': 1,
+                'product_id': False,
+            })
+            if (line_id.debit != 0 or line_id.credit != 0) and line_id_to_add not in list_line_ids:
+                list_line_ids.append(line_id_to_add)
             sequence += 1
         self.account_move_id.line_ids.unlink()
         self.account_move_id.sudo().write({'line_ids': list_line_ids})
@@ -90,38 +90,17 @@ class MpProvisionAccountMove(models.Model):
             'date': rec.date,
             'journal_id': journal_id.id,
             'name': rec.name,
+            'currency_id': rec.currency_id.id
         })
-        list_line_ids = []
         sequence = 0
         debit = 0
         credit = 0
         for line_id in rec.mp_provision_journal_item_ids:
-            amount_currency = line_id.debit if line_id.credit == 0 else line_id.credit
-            amount_currency = amount_currency * -1 if line_id.credit != 0 else amount_currency
             debit += line_id.debit
             credit += line_id.credit
-            list_line_ids.append(
-                (0, 0, {
-                    'account_id': line_id.account_id.id,
-                    'account_root_id': line_id.account_id.id,
-                    'name': line_id.account_id.name,
-                    'display_type': False,
-                    'debit': line_id.debit,
-                    'credit': line_id.credit,
-                    'sequence': sequence,
-                    'amount_currency': amount_currency,
-                    'currency_id': rec.currency_id.id,
-                    'analytic_account_id': rec.analytic_account_id.id,
-                    'analytic_tag_ids': rec.analytic_tag_ids.ids,
-                    'company_currency_id': rec.currency_id.id,
-                    'quantity': 1,
-                    'product_id': False,
-                })
-            )
             sequence += 1
         if credit == 0 or debit == 0:
             raise UserError(_("No se puede guardar asientos en 0."))
-        rec.account_move_id.sudo().write({'line_ids': list_line_ids})
         return rec
 
     def action_confirm(self):
@@ -135,7 +114,8 @@ class MpProvisionAccountMove(models.Model):
             for line_id in provision_id.mp_provision_id.mp_provision_item_line_ids:
                 if line_id.activo:
                     provision_id.mp_provision_journal_item_ids += self.env['mp.provision.journal.item'].create({
-                            'account_id': line_id.account_id.id,
-                            'debit': 0,
-                            'credit': 0,
-                        })
+                        'account_id': line_id.account_id.id,
+                        'currency_id': line_id.account_id.currency_id.id,
+                        'debit': 0,
+                        'credit': 0,
+                    })
