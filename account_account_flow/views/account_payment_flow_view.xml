@@ -11,7 +11,6 @@
             </tree>
         </field>
     </record>
-
     <record id="view_grupo_provision_form" model="ir.ui.view">
         <field name="name">mp.grupo.provision.form</field>
         <field name="model">mp.grupo.provision</field>
@@ -28,7 +27,6 @@
             </form>
         </field>
     </record>
-
     <record id="view_provision_form" model="ir.ui.view">
         <field name="name">mp.provision.form</field>
         <field name="model">mp.provision</field>
@@ -43,12 +41,14 @@
                     </group>
                     <group>
                         <field name="decripcion"/>
+                        <field name="contact_type"/>
+                        <field name="employee_id" attrs="{'invisible': [('contact_type', '=', 'customer')], 'required': [('contact_type', '=', 'employee')]}"/>
+                        <field name="partner_id" attrs="{'invisible': [('contact_type', '=', 'employee')], 'required': [('contact_type', '=', 'customer')]}"/>
                     </group>
                     <group>
                         <notebook>
                             <page string="Cuentas Ligadas">
-                                <field name="mp_provision_item_line_ids" force_save="1" mode="tree"
-                                       options="{'create': False, 'delete': False}">
+                                <field name="mp_provision_item_line_ids" force_save="1" mode="tree" options="{'create': False, 'delete': False}">
                                     <tree editable="bottom">
                                         <field name="activo"/>
                                         <field name="account_id" readonly="1"/>
@@ -61,7 +61,6 @@
             </form>
         </field>
     </record>
-
     <record id="view_mp_grupo_flujo_tree" model="ir.ui.view">
         <field name="name">mp.grupo.provision.tree</field>
         <field name="model">mp.grupo.provision</field>
@@ -72,28 +71,17 @@
             </tree>
         </field>
     </record>
-
     <record model="ir.actions.act_window" id="ir_account_mp_provision">
         <field name="name">MP provision</field>
         <field name="res_model">mp.provision</field>
         <field name="view_mode">tree,form</field>
     </record>
-
     <record model="ir.actions.act_window" id="ir_account_mp_grupo_provision">
         <field name="name">MP Grupo provision</field>
         <field name="res_model">mp.grupo.provision</field>
         <field name="view_mode">tree,form</field>
     </record>
-
-    <menuitem id="account_mp_provision_menu" parent="account.menu_finance_configuration"
-              name="Provision" sequence="2"/>
-
-    <menuitem id="menu_action_account_mp_grupo_provision"
-              name="MP Grupo Provision" sequence="5"
-              action="ir_account_mp_grupo_provision" parent="account_mp_provision_menu"/>
-
-    <menuitem id="menu_action_account_mp_provision"
-              name="MP Provision" sequence="10"
-              action="ir_account_mp_provision" parent="account_mp_provision_menu"/>
-
+    <menuitem id="account_mp_provision_menu" parent="account.menu_finance_configuration" name="Provision" sequence="2"/>
+    <menuitem id="menu_action_account_mp_grupo_provision" name="MP Grupo Provision" sequence="5" action="ir_account_mp_grupo_provision" parent="account_mp_provision_menu"/>
+    <menuitem id="menu_action_account_mp_provision" name="MP Provision" sequence="10" action="ir_account_mp_provision" parent="account_mp_provision_menu"/>
 </odoo>
