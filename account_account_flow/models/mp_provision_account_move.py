@@ -39,6 +39,20 @@ class MpProvisionAccountMove(models.Model):
         required=True,
         default=lambda self: self.env.user.company_id.currency_id,
     )
+    
+    contact_type = fields.Selection([('employee', 'Empleado'), ('customer', 'Proveedor')], string='Tipo de contacto')
+    employee_id = fields.Many2one(comodel_name='hr.employee', string='Empleado')
+    partner_id = fields.Many2one(comodel_name='res.partner', string='Proveedor')
+    
+    @api.onchange('contact_type')
+    def onchange_contact_type(self):
+        if self.contact_type == 'customer':
+            self.employee_id = False
+        elif self.contact_type == 'employee':
+            self.partner_id = False
+        else:
+            self.employee_id = False
+            self.partner_id = False
 
     def write(self, vals):
         res = super(MpProvisionAccountMove, self).write(vals)

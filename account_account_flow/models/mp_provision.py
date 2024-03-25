@@ -15,20 +15,6 @@ class MpProvision(models.Model):
     display_name = fields.Char(compute='_compute_display_name')
     mp_provision_item_line_ids = fields.One2many(comodel_name='mp.provision.item.line',
                                                  inverse_name='provision_id', required=True)
-    contact_type = fields.Selection([('employee', 'Empleado'), ('customer', 'Proveedor')], string='Tipo de contacto')
-    employee_id = fields.Many2one(comodel_name='hr.employee', string='Empleado')
-    partner_id = fields.Many2one(comodel_name='res.partner', string='Proveedor')
-    
-    @api.onchange('contact_type')
-    def onchange_contact_type(self):
-        if self.contact_type == 'customer':
-            self.employee_id = False
-        elif self.contact_type == 'employee':
-            self.partner_id = False
-        else:
-            self.employee_id = False
-            self.partner_id = False
-
 
     def _compute_display_name(self):
         for provision_id in self:

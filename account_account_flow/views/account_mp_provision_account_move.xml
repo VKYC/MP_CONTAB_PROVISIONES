@@ -12,28 +12,18 @@
                 <field name="mp_provision_ids" invisible="1"/>
                 <field name="analytic_account_id" options="{'no_create': True, 'no_open':True}"/>
                 <field name="analytic_tag_ids" widget="many2many_tags" options="{'no_create': True, 'no_open':True}"/>
-                <field name="state" widget="badge" decoration-success="state == 'confirmed'"
-                       decoration-info="state == 'draft'"/>
+                <field name="state" widget="badge" decoration-success="state == 'confirmed'" decoration-info="state == 'draft'"/>
             </tree>
         </field>
     </record>
-
     <record id="view_provision_account_move_form" model="ir.ui.view">
         <field name="name">mp.provision.account.move.form</field>
         <field name="model">mp.provision.account.move</field>
         <field name="arch" type="xml">
             <form string="MP provision">
                 <header>
-                    <button
-                        string="Confirmar"
-                        name="action_confirm"
-                        type="object"
-                        attrs="{'invisible': [('state', '!=', 'draft')]}"
-                    />
-                    <field
-                        name="state"
-                        widget="statusbar"
-                    />
+                    <button string="Confirmar" name="action_confirm" type="object" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -45,6 +35,9 @@
                         <group>
                             <field name="mp_grupo_provision_id" options="{'no_create': True, 'no_open':True}"/>
                             <field name="date"/>
+                            <field name="contact_type"/>
+                            <field name="employee_id" attrs="{'invisible': [('contact_type', '!=', 'employee')], 'required': [('contact_type', '=', 'employee')]}"/>
+                            <field name="partner_id" attrs="{'invisible': [('contact_type', '!=', 'customer')], 'required': [('contact_type', '=', 'customer')]}"/>
                         </group>
                         <group>
                             <field name="mp_provision_id" options="{'no_create': True, 'no_open':True}"/>
@@ -64,19 +57,14 @@
                     <group>
                         <notebook>
                             <page string="Apuntes Contables">
-                                <field name="mp_provision_journal_item_ids" mode="tree"
-                                       options="{'create': False, 'delete': False}">
+                                <field name="mp_provision_journal_item_ids" mode="tree" options="{'create': False, 'delete': False}">
                                     <tree editable="bottom" string="Apuntes contables">
-                                        <field name="account_id" options="{'no_create': True, 'no_open':True}"
-                                               readonly="1" force_save="1"/>
-                                        <field name="currency_id" options="{'no_create': True, 'no_open':True}"
-                                               readonly="1" force_save="1"/>
+                                        <field name="account_id" options="{'no_create': True, 'no_open':True}" readonly="1" force_save="1"/>
+                                        <field name="currency_id" options="{'no_create': True, 'no_open':True}" readonly="1" force_save="1"/>
                                         <field name="debit" sum="Total Debito"/>
                                         <field name="credit" sum="Total Credito"/>
-                                        <field name="currency_company_debit" sum="Total Debito CLP"
-                                               force_save="1"/>
-                                        <field name="currency_company_credit" sum="Total Credit CLP"
-                                               force_save="1"/>
+                                        <field name="currency_company_debit" sum="Total Debito CLP" force_save="1"/>
+                                        <field name="currency_company_credit" sum="Total Credit CLP" force_save="1"/>
                                     </tree>
                                 </field>
                             </page>
@@ -86,13 +74,11 @@
             </form>
         </field>
     </record>
-
     <record model="ir.actions.act_window" id="ir_account_mp_provision_account_move">
         <field name="name">MP provisiones</field>
         <field name="res_model">mp.provision.account.move</field>
         <field name="view_mode">tree,form</field>
     </record>
-
     <record id="view_mp_provision_account_move_journal_item_group_by_tree" model="ir.ui.view">
         <field name="name">mp.provision.journal.item.tree</field>
         <field name="model">mp.provision.journal.item</field>
@@ -107,12 +93,10 @@
                 <field name="credit"/>
                 <field name="currency_id" options="{'no_create': True, 'no_open':True}"/>
                 <field name="mp_provision_id"/>
-                <field name="state" widget="badge" decoration-success="state == 'confirmed'"
-                       decoration-info="state == 'draft'"/>
+                <field name="state" widget="badge" decoration-success="state == 'confirmed'" decoration-info="state == 'draft'"/>
             </tree>
         </field>
     </record>
-
     <record id="view_account_provision_account_journal_search" model="ir.ui.view">
         <field name="name">mp.provision.journal.item.search</field>
         <field name="model">mp.provision.journal.item</field>
@@ -120,12 +104,11 @@
         <field name="priority">1</field>
         <field name="arch" type="xml">
             <search string="Provision account move">
-                <separator />
+                <separator/>
                 <filter name="provision_journal_item" string="MP Provision" context="{'group_by':'mp_provision_id'}"/>
             </search>
         </field>
     </record>
-
     <record model="ir.actions.act_window" id="ir_action_journal">
         <field name="name">MP Provision apunte de diario</field>
         <field name="res_model">mp.provision.journal.item</field>
@@ -134,15 +117,7 @@
         <field name="view_id" ref="account_account_flow.view_mp_provision_account_move_journal_item_group_by_tree"/>
         <field name="context">{'search_default_provision_journal_item':1}</field>
     </record>
-
-    <menuitem id="account_mp_provision_account_move_menu" parent="account.menu_finance_entries"
-              name="Provision" sequence="2"/>
-
-    <menuitem id="menu_action_account_mp_provision_account_move"
-              name="MP Provisiones"
-              action="ir_account_mp_provision_account_move" parent="account_mp_provision_account_move_menu"/>
-
-    <menuitem id="menu_action_account_mp_provision_account_move_by_group"
-              name="Aprobaciones"
-              action="ir_action_journal" parent="account_mp_provision_account_move_menu"/>
+    <menuitem id="account_mp_provision_account_move_menu" parent="account.menu_finance_entries" name="Provision" sequence="2"/>
+    <menuitem id="menu_action_account_mp_provision_account_move" name="MP Provisiones" action="ir_account_mp_provision_account_move" parent="account_mp_provision_account_move_menu"/>
+    <menuitem id="menu_action_account_mp_provision_account_move_by_group" name="Aprobaciones" action="ir_action_journal" parent="account_mp_provision_account_move_menu"/>
 </odoo>

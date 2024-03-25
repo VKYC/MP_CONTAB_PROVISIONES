@@ -41,9 +41,6 @@
                     </group>
                     <group>
                         <field name="decripcion"/>
-                        <field name="contact_type"/>
-                        <field name="employee_id" attrs="{'invisible': [('contact_type', '=', 'customer')], 'required': [('contact_type', '=', 'employee')]}"/>
-                        <field name="partner_id" attrs="{'invisible': [('contact_type', '=', 'employee')], 'required': [('contact_type', '=', 'customer')]}"/>
                     </group>
                     <group>
                         <notebook>
