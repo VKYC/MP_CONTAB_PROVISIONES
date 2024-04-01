@@ -72,7 +72,7 @@ class MpProvisionAccountMove(models.Model):
                 'amount_currency': amount_currency,
                 'currency_id': line_id.currency_id.id,
                 'analytic_account_id': self.analytic_account_id.id,
-                'analytic_tag_ids': self.analytic_tag_ids.ids,
+                'analytic_tag_ids': [(6, 0, self.analytic_tag_ids.ids)],
                 'company_currency_id': self.currency_id.id,
                 'quantity': 1,
                 'product_id': False,
