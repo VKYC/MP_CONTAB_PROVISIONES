@@ -83,6 +83,8 @@ class MpProvisionAccountMove(models.Model):
         self.account_move_id.line_ids.unlink()
         self.account_move_id.sudo().write({'line_ids': list_line_ids})
         self.account_move_id.sudo().write({'date': self.date})
+        ref = self.partner_id.display_name or self.employee_id.display_name
+        self.account_move_id.sudo().write({'ref': ref})
         self.account_move_id.sudo().write({'name': self.name})
         return res
 
@@ -106,6 +108,8 @@ class MpProvisionAccountMove(models.Model):
             'name': rec.name,
             'currency_id': rec.currency_id.id
         })
+        ref = rec.partner_id.display_name or rec.employee_id.display_name
+        rec.account_move_id.sudo().write({'ref': ref})
         sequence = 0
         debit = 0
         credit = 0
