@@ -43,7 +43,8 @@ class MpProvisionAccountMove(models.Model):
     contact_type = fields.Selection([('employee', 'Empleado'), ('customer', 'Proveedor')], string='Tipo de contacto')
     employee_id = fields.Many2one(comodel_name='hr.employee', string='Empleado')
     partner_id = fields.Many2one(comodel_name='res.partner', string='Proveedor')
-    
+    journal_id = fields.Many2one(comodel_name='account.journal', string='Diario', required=True, domain="[('type', '=', 'general')]")
+
     @api.onchange('contact_type')
     def onchange_contact_type(self):
         if self.contact_type == 'customer':
@@ -100,11 +101,10 @@ class MpProvisionAccountMove(models.Model):
 
         rec = super(MpProvisionAccountMove, self).create(vals)
 
-        journal_id = self.env['account.journal'].search([('code', 'ilike', 'vario')])
         rec.account_move_id = self.env['account.move'].sudo().create({
             'state': 'draft',
             'date': rec.date,
-            'journal_id': journal_id.id,
+            'journal_id': self.journal_id.id,
             'name': rec.name,
             'currency_id': rec.currency_id.id
         })
